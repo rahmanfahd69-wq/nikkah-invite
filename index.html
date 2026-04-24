@@ -534,8 +534,8 @@
 <div class="screen" id="screen-rsvp">
   <div class="rsvp-card">
     <div class="rsvp-header">
-      <h2>Which day works for you?</h2>
-      <p>Let us know — we'd love to plan around you</p>
+      <h2>Which days work for you?</h2>
+      <p>Select all the dates you're available — the more, the better</p>
     </div>
 
     <div class="form-group">
@@ -544,7 +544,7 @@
     </div>
 
     <div class="form-group">
-      <label>Preferred nikkah date · December 2026</label>
+      <label>Preferred dates · December 20–30, 2026</label>
       <div class="date-grid" id="dateGrid"></div>
     </div>
 
@@ -583,6 +583,10 @@
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyV2lWA24d4QHq5Uwv1vi8KnjrKBj21XCXsky7cCbJfVSaW3179OgYwn0A66Y5ca9-SjQ/exec';
 
   const DATES = [
+    { num: 20, day: 'Sun' },
+    { num: 21, day: 'Mon' },
+    { num: 22, day: 'Tue' },
+    { num: 23, day: 'Wed' },
     { num: 24, day: 'Thu' },
     { num: 25, day: 'Fri' },
     { num: 26, day: 'Sat' },
@@ -592,7 +596,7 @@
     { num: 30, day: 'Wed' },
   ];
 
-  let state = { guestName: '', selectedDate: null };
+  let state = { guestName: '', selectedDates: [] };
 
   function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -640,11 +644,17 @@
       const btn = document.createElement('button');
       btn.className = 'date-option';
       btn.type = 'button';
+      btn.dataset.num = d.num;
       btn.innerHTML = `<span class="day-num">${d.num}</span><span class="day-label">${d.day}</span>`;
       btn.addEventListener('click', () => {
-        grid.querySelectorAll('.date-option').forEach(o => o.classList.remove('selected'));
-        btn.classList.add('selected');
-        state.selectedDate = d;
+        const idx = state.selectedDates.findIndex(x => x.num === d.num);
+        if (idx >= 0) {
+          state.selectedDates.splice(idx, 1);
+          btn.classList.remove('selected');
+        } else {
+          state.selectedDates.push(d);
+          btn.classList.add('selected');
+        }
         checkSubmit();
       });
       grid.appendChild(btn);
@@ -658,7 +668,7 @@
   });
 
   function checkSubmit() {
-    document.getElementById('submitBtn').disabled = !(state.guestName && state.selectedDate);
+    document.getElementById('submitBtn').disabled = !(state.guestName && state.selectedDates.length > 0);
   }
 
   document.getElementById('submitBtn').addEventListener('click', async () => {
@@ -666,20 +676,23 @@
     btn.disabled = true;
     btn.textContent = 'Sending...';
 
+    const sorted = [...state.selectedDates].sort((a, b) => a.num - b.num);
+    const dateStr = sorted.map(d => `December ${d.num}, 2026 (${d.day})`).join('; ');
+    const dateShort = sorted.map(d => `Dec ${d.num}`).join(', ');
+
     try {
-      // Use no-cors because Google Apps Script doesn't return CORS headers on POST
       await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify({
           name: state.guestName,
-          date: `December ${state.selectedDate.num}, 2026 (${state.selectedDate.day})`,
+          date: dateStr,
           userAgent: navigator.userAgent,
         })
       });
 
-      document.getElementById('confirmedDate').textContent = `December ${state.selectedDate.num}, 2026`;
+      document.getElementById('confirmedDate').textContent = dateShort;
       document.getElementById('confirmedName').textContent = state.guestName.split(' ')[0];
       showScreen('screen-thanks');
     } catch (err) {
@@ -692,10 +705,9 @@
   document.getElementById('editBtn').addEventListener('click', () => {
     document.getElementById('guestName').value = state.guestName;
     document.querySelectorAll('.date-option').forEach(o => {
-      o.classList.remove('selected');
-      if (state.selectedDate && parseInt(o.querySelector('.day-num').textContent) === state.selectedDate.num) {
-        o.classList.add('selected');
-      }
+      const num = parseInt(o.dataset.num);
+      const isSelected = state.selectedDates.some(d => d.num === num);
+      o.classList.toggle('selected', isSelected);
     });
     const btn = document.getElementById('submitBtn');
     btn.disabled = false;
