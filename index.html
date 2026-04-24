@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Kulsom Fiza & Fahd Abdulrahman — Nikkah Invitation">
+<title>Kulsom & Fahd — Nikkah Invitation</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💌</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #fafaf8;
+    color: #1a1a1a;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .screen {
+    display: none;
+    min-height: 100vh;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 40px 24px;
+    animation: fadeIn 0.8s ease;
+  }
+  .screen.active { display: flex; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== GIFT BOX SCREEN ===== */
+  .gift-intro { text-align: center; margin-bottom: 40px; }
+  .gift-intro .you-invited {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 12px;
+    font-weight: 400;
+  }
+  .gift-intro h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 300;
+    color: #1a1a1a;
+    letter-spacing: 1px;
+    font-style: italic;
+  }
+  .gift-box-wrapper {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    cursor: pointer;
+    perspective: 1000px;
+  }
+  .gift-box {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.4s ease;
+    animation: gentleBob 3s ease-in-out infinite;
+  }
+  .gift-box:hover { transform: scale(1.05); }
+  .gift-box.opening { animation: openShake 0.6s ease; }
+  @keyframes gentleBob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  @keyframes openShake {
+    0%, 100% { transform: rotate(0); }
+    20% { transform: rotate(-5deg); }
+    40% { transform: rotate(5deg); }
+    60% { transform: rotate(-3deg); }
+    80% { transform: rotate(3deg); }
+  }
+  .box-base {
+    position: absolute; bottom: 0; left: 0;
+    width: 100%; height: 70%;
+    background: #1a1a1a; border-radius: 4px;
+  }
+  .box-lid {
+    position: absolute; top: 0; left: -5%;
+    width: 110%; height: 35%;
+    background: #1a1a1a; border-radius: 4px;
+    transform-origin: bottom center;
+    transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    z-index: 3;
+  }
+  .gift-box.opening .box-lid {
+    transform: translateY(-80px) rotate(-30deg);
+    opacity: 0;
+  }
+  .ribbon-vertical {
+    position: absolute; top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 20px; height: 100%;
+    background: #d4af6a; z-index: 2;
+  }
+  .ribbon-horizontal {
+    position: absolute; top: 40%; left: -5%;
+    width: 110%; height: 20px;
+    background: #d4af6a; z-index: 2;
+  }
+  .bow {
+    position: absolute; top: -15px; left: 50%;
+    transform: translateX(-50%);
+    width: 60px; height: 40px; z-index: 4;
+  }
+  .bow::before, .bow::after {
+    content: ''; position: absolute; top: 0;
+    width: 25px; height: 40px;
+    background: #d4af6a; border-radius: 50%;
+  }
+  .bow::before { left: 0; transform: rotate(-20deg); }
+  .bow::after { right: 0; transform: rotate(20deg); }
+  .bow-center {
+    position: absolute; top: 12px; left: 50%;
+    transform: translateX(-50%);
+    width: 16px; height: 16px;
+    background: #b8934e; border-radius: 2px; z-index: 5;
+  }
+  .tap-hint {
+    margin-top: 32px;
+    font-size: 13px;
+    color: #888;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+  /* ===== INVITATION SCREEN ===== */
+  .invitation {
+    max-width: 520px;
+    width: 100%;
+    background: #fff;
+    padding: 48px 36px;
+    border: 1px solid #e8e4dc;
+    border-radius: 2px;
+    text-align: center;
+    position: relative;
+  }
+  .corner-ornament {
+    position: absolute;
+    width: 50px; height: 50px;
+    opacity: 0.3;
+  }
+  .corner-ornament.tl { top: 12px; left: 12px; }
+  .corner-ornament.tr { top: 12px; right: 12px; transform: scaleX(-1); }
+  .corner-ornament.bl { bottom: 12px; left: 12px; transform: scaleY(-1); }
+  .corner-ornament.br { bottom: 12px; right: 12px; transform: scale(-1, -1); }
+  .bismillah {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 28px;
+    font-weight: 400;
+  }
+  .together-with {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: #666;
+    margin-bottom: 24px;
+    font-weight: 400;
+  }
+  .couple { margin: 20px 0 32px; }
+  .name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px;
+    font-weight: 400;
+    color: #1a1a1a;
+    letter-spacing: 1px;
+    line-height: 1.2;
+    margin: 6px 0;
+  }
+  .parents {
+    font-size: 11px;
+    color: #888;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin: 4px 0 10px;
+    font-weight: 300;
+  }
+  .ampersand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 40px;
+    font-weight: 300;
+    color: #d4af6a;
+    font-style: italic;
+    margin: 8px 0;
+    line-height: 1;
+  }
+  .divider {
+    width: 60px;
+    height: 1px;
+    background: #d4af6a;
+    margin: 24px auto;
+  }
+  .invite-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    color: #555;
+    font-style: italic;
+    line-height: 1.6;
+    margin: 20px 0;
+  }
+  .occasion {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #1a1a1a;
+    margin: 16px 0 8px;
+    font-weight: 500;
+  }
+  .location {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    color: #1a1a1a;
+    margin-bottom: 24px;
+    font-weight: 400;
+  }
+  .rsvp-prompt {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: #666;
+    margin: 28px 0 20px;
+    line-height: 1.5;
+  }
+  .continue-btn {
+    background: #1a1a1a;
+    color: #fff;
+    border: none;
+    padding: 14px 36px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 12px;
+  }
+  .continue-btn:hover {
+    background: #d4af6a;
+    color: #1a1a1a;
+  }
+
+  /* ===== RSVP SCREEN ===== */
+  .rsvp-card {
+    max-width: 480px;
+    width: 100%;
+    background: #fff;
+    padding: 40px 32px;
+    border: 1px solid #e8e4dc;
+  }
+  .rsvp-header { text-align: center; margin-bottom: 32px; }
+  .rsvp-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 400;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+  }
+  .rsvp-header p {
+    font-size: 13px;
+    color: #888;
+    font-style: italic;
+  }
+  .form-group { margin-bottom: 24px; }
+  .form-group label {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #666;
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  .form-group input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #e0dcd4;
+    background: #fafaf8;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: #1a1a1a;
+    outline: none;
+    transition: border 0.2s ease;
+  }
+  .form-group input:focus { border-color: #d4af6a; }
+  .date-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .date-option {
+    background: #fafaf8;
+    border: 1px solid #e0dcd4;
+    padding: 14px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Inter', sans-serif;
+  }
+  .date-option:hover {
+    border-color: #d4af6a;
+    background: #fff;
+  }
+  .date-option.selected {
+    background: #1a1a1a;
+    border-color: #1a1a1a;
+    color: #fff;
+  }
+  .date-option .day-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 500;
+    display: block;
+    line-height: 1;
+  }
+  .date-option .day-label {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    display: block;
+    margin-top: 4px;
+    opacity: 0.7;
+  }
+  .submit-btn {
+    width: 100%;
+    background: #1a1a1a;
+    color: #fff;
+    border: none;
+    padding: 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 8px;
+  }
+  .submit-btn:hover:not(:disabled) {
+    background: #d4af6a;
+    color: #1a1a1a;
+  }
+  .submit-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  /* ===== THANK YOU SCREEN ===== */
+  .thank-you { text-align: center; max-width: 480px; }
+  .checkmark-wrap {
+    width: 80px; height: 80px;
+    border: 1px solid #d4af6a;
+    border-radius: 50%;
+    margin: 0 auto 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: scaleIn 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  }
+  @keyframes scaleIn {
+    from { transform: scale(0); }
+    to { transform: scale(1); }
+  }
+  .checkmark-wrap svg {
+    width: 36px; height: 36px;
+    stroke: #d4af6a;
+    stroke-width: 1.5;
+    fill: none;
+  }
+  .thank-you h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 34px;
+    font-weight: 300;
+    color: #1a1a1a;
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+  .thank-you p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+  .confirmed-date {
+    display: inline-block;
+    padding: 12px 24px;
+    border: 1px solid #d4af6a;
+    margin: 20px 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    color: #1a1a1a;
+  }
+  .edit-btn {
+    background: transparent;
+    color: #1a1a1a;
+    border: 1px solid #1a1a1a;
+    padding: 12px 28px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 12px;
+  }
+  .edit-btn:hover {
+    background: #1a1a1a;
+    color: #fff;
+  }
+  .final-note {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: #888;
+    margin-top: 28px;
+    line-height: 1.5;
+    padding: 0 16px;
+  }
+  .contact-info {
+    font-size: 12px;
+    color: #888;
+    margin-top: 32px;
+    letter-spacing: 1px;
+  }
+  .contact-info a {
+    color: #1a1a1a;
+    text-decoration: none;
+    border-bottom: 1px solid #d4af6a;
+    padding-bottom: 1px;
+  }
+  .dot-sep {
+    color: #d4af6a;
+    margin: 0 10px;
+  }
+
+  /* Petals animation */
+  .petal {
+    position: absolute;
+    width: 8px; height: 8px;
+    background: #d4af6a;
+    border-radius: 50% 10% 50% 10%;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  @media (max-width: 480px) {
+    .name { font-size: 30px; }
+    .invitation { padding: 36px 24px; }
+    .date-option .day-num { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SCREEN 1: GIFT BOX -->
+<div class="screen active" id="screen-gift">
+  <div class="gift-intro">
+    <div class="you-invited">A special invitation</div>
+    <h1>Someone wants to see you there</h1>
+  </div>
+  <div class="gift-box-wrapper" id="giftBox">
+    <div class="gift-box">
+      <div class="box-base"></div>
+      <div class="ribbon-horizontal"></div>
+      <div class="box-lid">
+        <div class="ribbon-vertical"></div>
+      </div>
+      <div class="bow">
+        <div class="bow-center"></div>
+      </div>
+    </div>
+  </div>
+  <div class="tap-hint">Tap to open</div>
+</div>
+
+<!-- SCREEN 2: INVITATION -->
+<div class="screen" id="screen-invite">
+  <div class="invitation">
+    <svg class="corner-ornament tl" viewBox="0 0 50 50"><path d="M5,5 Q25,5 25,25 M5,5 Q5,25 25,25 M15,5 L15,15 M5,15 L15,15" stroke="#d4af6a" stroke-width="0.8" fill="none"/></svg>
+    <svg class="corner-ornament tr" viewBox="0 0 50 50"><path d="M5,5 Q25,5 25,25 M5,5 Q5,25 25,25 M15,5 L15,15 M5,15 L15,15" stroke="#d4af6a" stroke-width="0.8" fill="none"/></svg>
+    <svg class="corner-ornament bl" viewBox="0 0 50 50"><path d="M5,5 Q25,5 25,25 M5,5 Q5,25 25,25 M15,5 L15,15 M5,15 L15,15" stroke="#d4af6a" stroke-width="0.8" fill="none"/></svg>
+    <svg class="corner-ornament br" viewBox="0 0 50 50"><path d="M5,5 Q25,5 25,25 M5,5 Q5,25 25,25 M15,5 L15,15 M5,15 L15,15" stroke="#d4af6a" stroke-width="0.8" fill="none"/></svg>
+
+    <div class="bismillah">Bismillah</div>
+
+    <div class="together-with">With the blessings of the Almighty<br>our families invite you to witness the Nikkah of</div>
+
+    <div class="couple">
+      <div class="name">Kulsom Fiza</div>
+      <div class="parents">D/o Abdul Khader &amp; Shini Khader</div>
+
+      <div class="ampersand">&</div>
+
+      <div class="name">Fahd Abdulrahman</div>
+      <div class="parents">S/o Mujib PM &amp; Thasni Mujib</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="occasion">The Nikkah</div>
+    <div class="location">Thiruvananthapuram · December 2026</div>
+
+    <div class="rsvp-prompt">
+      Your presence would mean the world to us.<br>
+      Help us choose the day that suits you best.
+    </div>
+
+    <button class="continue-btn" id="continueBtn">Confirm your date</button>
+  </div>
+</div>
+
+<!-- SCREEN 3: RSVP FORM -->
+<div class="screen" id="screen-rsvp">
+  <div class="rsvp-card">
+    <div class="rsvp-header">
+      <h2>Which day works for you?</h2>
+      <p>Let us know — we'd love to plan around you</p>
+    </div>
+
+    <div class="form-group">
+      <label>Your name</label>
+      <input type="text" id="guestName" placeholder="Enter your full name">
+    </div>
+
+    <div class="form-group">
+      <label>Preferred nikkah date · December 2026</label>
+      <div class="date-grid" id="dateGrid"></div>
+    </div>
+
+    <button class="submit-btn" id="submitBtn" disabled>Send my response</button>
+  </div>
+</div>
+
+<!-- SCREEN 4: THANK YOU -->
+<div class="screen" id="screen-thanks">
+  <div class="thank-you">
+    <div class="checkmark-wrap">
+      <svg viewBox="0 0 24 24"><polyline points="5 12 10 17 19 8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <h2>Thank you</h2>
+    <p>Your response has been recorded.</p>
+    <div class="confirmed-date" id="confirmedDate">—</div>
+    <p>We can't wait to celebrate with you, <span id="confirmedName">—</span>.</p>
+
+    <button class="edit-btn" id="editBtn">Edit my response</button>
+
+    <div class="final-note">
+      The final date will be confirmed based on the majority preference of our guests.
+    </div>
+
+    <div class="contact-info">
+      For any queries<br>
+      <a href="https://wa.me/919446044444" target="_blank">+91 94460 44444</a>
+      <span class="dot-sep">·</span>
+      <a href="https://wa.me/919074353164" target="_blank">+91 90743 53164</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ============ CONFIG ============
+  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyV2lWA24d4QHq5Uwv1vi8KnjrKBj21XCXsky7cCbJfVSaW3179OgYwn0A66Y5ca9-SjQ/exec';
+
+  const DATES = [
+    { num: 24, day: 'Thu' },
+    { num: 25, day: 'Fri' },
+    { num: 26, day: 'Sat' },
+    { num: 27, day: 'Sun' },
+    { num: 28, day: 'Mon' },
+    { num: 29, day: 'Tue' },
+    { num: 30, day: 'Wed' },
+  ];
+
+  let state = { guestName: '', selectedDate: null };
+
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Gift box
+  const giftBox = document.getElementById('giftBox');
+  giftBox.addEventListener('click', () => {
+    giftBox.querySelector('.gift-box').classList.add('opening');
+    launchPetals();
+    setTimeout(() => showScreen('screen-invite'), 900);
+  });
+
+  function launchPetals() {
+    for (let i = 0; i < 20; i++) {
+      const p = document.createElement('div');
+      p.className = 'petal';
+      const startX = 50 + (Math.random() - 0.5) * 10;
+      const endX = startX + (Math.random() - 0.5) * 80;
+      const duration = 1500 + Math.random() * 1500;
+      p.style.left = startX + '%';
+      p.style.top = '50%';
+      p.style.position = 'fixed';
+      p.style.background = Math.random() > 0.5 ? '#d4af6a' : '#e8d49a';
+      document.body.appendChild(p);
+      p.animate([
+        { transform: 'translate(0, 0) rotate(0)', opacity: 1 },
+        { transform: `translate(${(endX - startX) * 4}px, ${200 + Math.random() * 200}px) rotate(${Math.random() * 720}deg)`, opacity: 0 }
+      ], { duration, easing: 'cubic-bezier(0.4, 0, 0.6, 1)' });
+      setTimeout(() => p.remove(), duration);
+    }
+  }
+
+  document.getElementById('continueBtn').addEventListener('click', () => {
+    buildDateGrid();
+    showScreen('screen-rsvp');
+  });
+
+  function buildDateGrid() {
+    const grid = document.getElementById('dateGrid');
+    grid.innerHTML = '';
+    DATES.forEach(d => {
+      const btn = document.createElement('button');
+      btn.className = 'date-option';
+      btn.type = 'button';
+      btn.innerHTML = `<span class="day-num">${d.num}</span><span class="day-label">${d.day}</span>`;
+      btn.addEventListener('click', () => {
+        grid.querySelectorAll('.date-option').forEach(o => o.classList.remove('selected'));
+        btn.classList.add('selected');
+        state.selectedDate = d;
+        checkSubmit();
+      });
+      grid.appendChild(btn);
+    });
+  }
+
+  const nameInput = document.getElementById('guestName');
+  nameInput.addEventListener('input', (e) => {
+    state.guestName = e.target.value.trim();
+    checkSubmit();
+  });
+
+  function checkSubmit() {
+    document.getElementById('submitBtn').disabled = !(state.guestName && state.selectedDate);
+  }
+
+  document.getElementById('submitBtn').addEventListener('click', async () => {
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+
+    try {
+      // Use no-cors because Google Apps Script doesn't return CORS headers on POST
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+          name: state.guestName,
+          date: `December ${state.selectedDate.num}, 2026 (${state.selectedDate.day})`,
+          userAgent: navigator.userAgent,
+        })
+      });
+
+      document.getElementById('confirmedDate').textContent = `December ${state.selectedDate.num}, 2026`;
+      document.getElementById('confirmedName').textContent = state.guestName.split(' ')[0];
+      showScreen('screen-thanks');
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = 'Send my response';
+      alert('Could not send your response. Please check your connection and try again.');
+    }
+  });
+
+  document.getElementById('editBtn').addEventListener('click', () => {
+    document.getElementById('guestName').value = state.guestName;
+    document.querySelectorAll('.date-option').forEach(o => {
+      o.classList.remove('selected');
+      if (state.selectedDate && parseInt(o.querySelector('.day-num').textContent) === state.selectedDate.num) {
+        o.classList.add('selected');
+      }
+    });
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = false;
+    btn.textContent = 'Update my response';
+    showScreen('screen-rsvp');
+  });
+</script>
+</body>
+</html>
